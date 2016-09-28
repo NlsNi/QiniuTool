@@ -39,12 +39,16 @@
             this.buttonUrl = new System.Windows.Forms.Button();
             this.textBoxUrl = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonWatch = new System.Windows.Forms.Button();
             this.textBoxWatch = new System.Windows.Forms.TextBox();
+            this.buttonWatch = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -115,7 +119,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip.Location = new System.Drawing.Point(0, 374);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(368, 22);
+            this.statusStrip.Size = new System.Drawing.Size(687, 22);
             this.statusStrip.TabIndex = 2;
             // 
             // toolStripStatusLabel1
@@ -150,6 +154,26 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "外链地址";
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.dataGridView1);
+            this.groupBox2.Location = new System.Drawing.Point(362, 13);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(313, 358);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "图片列表";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(6, 20);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(301, 332);
+            this.dataGridView1.TabIndex = 0;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -158,6 +182,13 @@
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 3;
             this.label2.Text = "监测路径";
+            // 
+            // textBoxWatch
+            // 
+            this.textBoxWatch.Location = new System.Drawing.Point(65, 65);
+            this.textBoxWatch.Name = "textBoxWatch";
+            this.textBoxWatch.Size = new System.Drawing.Size(159, 21);
+            this.textBoxWatch.TabIndex = 4;
             // 
             // buttonWatch
             // 
@@ -169,19 +200,13 @@
             this.buttonWatch.UseVisualStyleBackColor = true;
             this.buttonWatch.Click += new System.EventHandler(this.buttonWatch_Click);
             // 
-            // textBoxWatch
-            // 
-            this.textBoxWatch.Location = new System.Drawing.Point(65, 65);
-            this.textBoxWatch.Name = "textBoxWatch";
-            this.textBoxWatch.Size = new System.Drawing.Size(159, 21);
-            this.textBoxWatch.TabIndex = 4;
-            // 
             // QiniuGui
             // 
             this.AllowDrop = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(368, 396);
+            this.ClientSize = new System.Drawing.Size(687, 396);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.buttonUrl);
             this.Controls.Add(this.textBoxUrl);
             this.Controls.Add(this.label3);
@@ -194,6 +219,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,6 +239,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Button buttonUpload;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button buttonWatch;
         private System.Windows.Forms.TextBox textBoxWatch;
         private System.Windows.Forms.Label label2;

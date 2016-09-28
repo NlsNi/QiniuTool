@@ -12,19 +12,25 @@ using Qiniu.Auth;
 using Qiniu.IO;
 using Qiniu.IO.Resumable;
 using Qiniu.RS;
-
+using Qiniu.RPC;
+using Qiniu.RSF;
+using MySql.Data;
+using MySql.Data.MySqlClient;
 
 namespace QiniuTool
 {
     public partial class QiniuGui : Form
-    {
+    {        
         public QiniuGui()
         {
-            InitializeComponent();        
+            InitializeComponent();
+            Qiniu.Conf.Config.ACCESS_KEY = "AK";
+            Qiniu.Conf.Config.SECRET_KEY = "SK";
         }
 
         private void buttonPic_Click(object sender, EventArgs e)
         {
+
             OpenFileDialog fileDialog = new OpenFileDialog();
             string picPath = null;
             if (fileDialog.ShowDialog() == DialogResult.OK)
@@ -72,15 +78,11 @@ namespace QiniuTool
         {
             string filepath = e.FullPath;
             string filename = e.Name;
-            upload(filename, filepath);
-            
+            upload(filename, filepath);   
         }
 
         private void upload(string filename,string filepath)
         {
-            //设置AK SK
-            Qiniu.Conf.Config.ACCESS_KEY = "ACCESS_KEY";
-            Qiniu.Conf.Config.SECRET_KEY = "SECRET_KEY";
             IOClient target = new IOClient();
             PutExtra extra  = new PutExtra();
             string bucket = "bucketname";
@@ -91,6 +93,44 @@ namespace QiniuTool
             toolStripStatusLabel1.Text = ret.Response.ToString();
             string url= @"http://example.bkt.clouddn.com/" + filename;
             textBoxUrl.Text = url;
+
+            string uploadTime = string.Format("{0:yyyy-MM-dd HH:mm:ss}",DateTime.Now);
+            string hashValue = ret.Hash;
+            string downloadUrl = url;
+            string localPath = filepath;
+
+            MySqlConnection conn;
+            //注意连接字符串加 Allow User Variables=True;
+            string connectString =  "server=127.0.0.1;uid=root;" +
+                                    "pwd=*********;database=qiniu;Allow User Variables=True;";
+            try
+            {
+                conn = new MySqlConnection();
+                conn.ConnectionString = connectString;
+                conn.Open();
+                string sqlInsert = "INSERT INTO pictures(Bucket,HashValue,UploadTime,DownloadUrl,LocalPath,Description)" +
+                                "values(@Bucket,@HashValue,@UploadTime,@DownloadUrl,@LocalPath,@Description)";
+                MySqlCommand cmd = new MySqlCommand(sqlInsert, conn);
+                cmd.Parameters.AddWithValue("@Bucket",bucket);
+                cmd.Parameters.AddWithValue("@HashValue", hashValue);
+                cmd.Parameters.AddWithValue("@UploadTime", uploadTime);
+                cmd.Parameters.AddWithValue("@DownloadUrl", downloadUrl);
+                cmd.Parameters.AddWithValue("@LocalPath", localPath);
+                //cmd.Parameters.AddWithValue("@Description", Description);
+                cmd.ExecuteNonQuery();
+                string sqlQuery = "SELECT * FROM pictures ";
+                MySqlDataAdapter adapterQuery = new MySqlDataAdapter(sqlQuery,conn);
+                MySqlCommandBuilder builder = new MySqlCommandBuilder(adapterQuery);
+                DataSet ds = new DataSet();
+                adapterQuery.Fill(ds,"pictures");
+                dataGridView1.DataSource = ds;
+                dataGridView1.DataMember = "pictures";
+
+            }
+            catch(Exception ex)
+            {
+                toolStripStatusLabel1.Text = ex.Message + "数据库操作失败，请检查设置";
+            }
         }
 
         private void buttonUrl_Click(object sender, EventArgs e)
