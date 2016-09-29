@@ -30,6 +30,9 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonUpload = new System.Windows.Forms.Button();
+            this.buttonWatch = new System.Windows.Forms.Button();
+            this.textBoxWatch = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.buttonPic = new System.Windows.Forms.Button();
             this.textBoxPic = new System.Windows.Forms.TextBox();
@@ -41,9 +44,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxWatch = new System.Windows.Forms.TextBox();
-            this.buttonWatch = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.statusStrip.SuspendLayout();
@@ -77,6 +77,32 @@
             this.buttonUpload.Text = "上传";
             this.buttonUpload.UseVisualStyleBackColor = true;
             this.buttonUpload.Click += new System.EventHandler(this.buttonUpload_Click);
+            // 
+            // buttonWatch
+            // 
+            this.buttonWatch.Location = new System.Drawing.Point(232, 64);
+            this.buttonWatch.Name = "buttonWatch";
+            this.buttonWatch.Size = new System.Drawing.Size(49, 23);
+            this.buttonWatch.TabIndex = 5;
+            this.buttonWatch.Text = "浏览";
+            this.buttonWatch.UseVisualStyleBackColor = true;
+            this.buttonWatch.Click += new System.EventHandler(this.buttonWatch_Click);
+            // 
+            // textBoxWatch
+            // 
+            this.textBoxWatch.Location = new System.Drawing.Point(65, 65);
+            this.textBoxWatch.Name = "textBoxWatch";
+            this.textBoxWatch.Size = new System.Drawing.Size(159, 21);
+            this.textBoxWatch.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 69);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "监测路径";
             // 
             // pictureBox1
             // 
@@ -173,32 +199,7 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(301, 332);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 69);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "监测路径";
-            // 
-            // textBoxWatch
-            // 
-            this.textBoxWatch.Location = new System.Drawing.Point(65, 65);
-            this.textBoxWatch.Name = "textBoxWatch";
-            this.textBoxWatch.Size = new System.Drawing.Size(159, 21);
-            this.textBoxWatch.TabIndex = 4;
-            // 
-            // buttonWatch
-            // 
-            this.buttonWatch.Location = new System.Drawing.Point(232, 64);
-            this.buttonWatch.Name = "buttonWatch";
-            this.buttonWatch.Size = new System.Drawing.Size(49, 23);
-            this.buttonWatch.TabIndex = 5;
-            this.buttonWatch.Text = "浏览";
-            this.buttonWatch.UseVisualStyleBackColor = true;
-            this.buttonWatch.Click += new System.EventHandler(this.buttonWatch_Click);
+            this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             // 
             // QiniuGui
             // 

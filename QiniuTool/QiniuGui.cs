@@ -152,5 +152,15 @@ namespace QiniuTool
             string filename = string.Format("{0:yyyyMMdd_HHmmss}",DateTime.Now) + "." + ending;
             upload(filename, filepath);
         }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string localPath = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+            if (File.Exists(localPath))
+            {
+                pictureBox1.Image = Image.FromFile(localPath);
+            }
+
+        }
     }
 }
