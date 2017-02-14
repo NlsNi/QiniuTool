@@ -26,7 +26,7 @@ CREATE TABLE pictures (
 
 ## 图片预览
 
-当点击datagridview中的单元格时，会读取所在行的localPath值，然后载入该路径的本地图片。
+当点击datagridview中的单元格时，会读取所在行的localPath值，然后载入该路径的本地图片。同时会将对应的图片外链地址更新至左侧外链地址文本框中，方便进行复制操作。
 
 Todo List
 
