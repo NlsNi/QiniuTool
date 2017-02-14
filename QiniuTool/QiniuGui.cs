@@ -159,6 +159,7 @@ namespace QiniuTool
             if (File.Exists(localPath))
             {
                 pictureBox1.Image = Image.FromFile(localPath);
+                this.textBoxUrl.Text = dataGridView1.CurrentRow.Cells[4].Value.ToString();
             }
 
         }
