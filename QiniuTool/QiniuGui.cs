@@ -16,6 +16,8 @@ using Qiniu.RPC;
 using Qiniu.RSF;
 using MySql.Data;
 using MySql.Data.MySqlClient;
+using System.Configuration;
+using System.Collections.Specialized;
 
 namespace QiniuTool
 {
@@ -44,8 +46,8 @@ namespace QiniuTool
                 if (picPath.EndsWith("jpg") | picPath.EndsWith("png") |
                     picPath.EndsWith("bmp") | picPath.EndsWith("gif"))
                 {
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.Image = Image.FromFile(picPath);
+                    pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox.Image = Image.FromFile(picPath);
                 }
             }
 
@@ -85,7 +87,11 @@ namespace QiniuTool
         {
             IOClient target = new IOClient();
             PutExtra extra  = new PutExtra();
-            string bucket = "bucketname";
+            string bucket;
+            if(String.IsNullOrEmpty(this.textBoxBucket.Text))
+                 bucket = "defaultbucketname";
+            else
+                 bucket = this.textBoxBucket.Text;
             string key = filename;
             PutPolicy put = new PutPolicy(bucket, 3600);
             string upToken = put.Token();
@@ -100,9 +106,7 @@ namespace QiniuTool
             string localPath = filepath;
 
             MySqlConnection conn;
-            //注意连接字符串加 Allow User Variables=True;
-            string connectString =  "server=127.0.0.1;uid=root;" +
-                                    "pwd=*********;database=qiniu;Allow User Variables=True;";
+            string connectString = ConfigurationManager.ConnectionStrings["qiniu"].ConnectionString;
             try
             {
                 conn = new MySqlConnection();
@@ -123,14 +127,16 @@ namespace QiniuTool
                 MySqlCommandBuilder builder = new MySqlCommandBuilder(adapterQuery);
                 DataSet ds = new DataSet();
                 adapterQuery.Fill(ds,"pictures");
-                dataGridView1.DataSource = ds;
-                dataGridView1.DataMember = "pictures";
+                dataGridView.DataSource = ds;
+                dataGridView.DataMember = "pictures";
+                conn.Close();
 
             }
             catch(Exception ex)
             {
                 toolStripStatusLabel1.Text = ex.Message + "数据库操作失败，请检查设置";
             }
+            this.showAllPictures();
         }
 
         private void buttonUrl_Click(object sender, EventArgs e)
@@ -155,13 +161,32 @@ namespace QiniuTool
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            string localPath = dataGridView1.CurrentRow.Cells[5].Value.ToString();
+            string localPath = dataGridView.CurrentRow.Cells[5].Value.ToString();
             if (File.Exists(localPath))
             {
-                pictureBox1.Image = Image.FromFile(localPath);
-                this.textBoxUrl.Text = dataGridView1.CurrentRow.Cells[4].Value.ToString();
+                pictureBox.Image = Image.FromFile(localPath);
+                this.textBoxUrl.Text = dataGridView.CurrentRow.Cells[4].Value.ToString();
             }
 
+        }
+        private void showAllPictures()
+        {
+            string connectString = ConfigurationManager.ConnectionStrings["qiniu"].ConnectionString;
+            MySqlConnection connection = new MySqlConnection();
+            connection.ConnectionString = connectString;
+            connection.Open();
+            string sqlQuery = "SELECT * FROM pictures";
+            MySqlDataAdapter adapterQuery = new MySqlDataAdapter(sqlQuery, connection);
+            MySqlCommandBuilder builder = new MySqlCommandBuilder(adapterQuery);
+            DataSet ds = new DataSet();
+            adapterQuery.Fill(ds, "pictures");
+            this.dataGridView.DataSource = ds;
+            this.dataGridView.DataMember = "pictures";
+            connection.Close();
+        }
+        private void dataGridView_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.showAllPictures();
         }
     }
 }
