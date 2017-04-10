@@ -100,7 +100,7 @@ namespace QiniuTool
             string url= @"http://example.bkt.clouddn.com/" + filename;
             textBoxUrl.Text = url;
 
-            string uploadTime = string.Format("{0:yyyy-mm-dd hh:mm:ss}",DateTime.Now);
+            string uploadTime = string.Format("{0:yyyy-MM-dd HH:mm:ss}",DateTime.Now);
             string hashValue = ret.Hash;
             string downloadUrl = url;
             string localPath = filepath;
@@ -155,7 +155,7 @@ namespace QiniuTool
         {
             string filepath = textBoxPic.Text;
             string ending = filepath.Split('.')[1];
-            string filename = string.Format("{0:yyyymmdd_hhmmss}",DateTime.Now) + "." + ending;
+            string filename = string.Format("{0:yyyyMMdd_HHmmss}",DateTime.Now) + "." + ending;
             upload(filename, filepath);
         }
 
