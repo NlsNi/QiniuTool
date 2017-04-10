@@ -28,6 +28,7 @@ namespace QiniuTool
     public partial class QiniuGui : Form
     {
         private static Mac mac = null;
+        private string fileToUpload = "";
         public QiniuGui()
         {
             InitializeComponent();
@@ -57,6 +58,8 @@ namespace QiniuTool
             {
                 picPath = fileDialog.FileName.ToString();
                 this.textBoxPath.Text = picPath;
+                this.fileToUpload = picPath;
+                
             }
             if (!String.IsNullOrEmpty(picPath))
             {
@@ -111,7 +114,7 @@ namespace QiniuTool
                     else
                     {
                         string ending = filepath.Split('.')[1];
-                        string filename = String.Format("{0:yyyymmdd_hhmmss}", DateTime.Now) + "." + ending;
+                        string filename = String.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now) + "." + ending;
                         this.Upload(filename, filepath);
                         this.ShowAllPictures();
                     }
@@ -154,12 +157,12 @@ namespace QiniuTool
             string domain = bucketManager.Domains(bucket).Result[0];
             FormUploader formUploader = new FormUploader();
             HttpResult result = formUploader.UploadFile(filepath,filename,token);
-            if(result.RefCode ==200)
+            if(result.RefCode == 200)
             {
                 this.toolStripStatusLabel.Text = "上传成功";
                 #region UpdateDatabase
 
-                string uploadTime = String.Format("{0:yyyy-mm-dd hh:mm:ss}", DateTime.Now);
+                string uploadTime = String.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now);
                 string hashValue = GetMD5Hash(filepath);
                 string downloadUrl = "http://" + domain + "/"+ filename;
                 this.textBoxUrl.Text = downloadUrl;
@@ -171,7 +174,7 @@ namespace QiniuTool
                     using (MySqlConnection connection = new MySqlConnection(connectionString))
                     {
                         connection.Open();
-                        string sqlInsert = "INSERT INTO pictures(Bucket,HashValue,UploadTime,DownloadUrl,LocalPath,Description)" +
+                        string sqlInsert = "INSERT INTO pictures(Bucket,HashValue,UploadTime,DownloadUrl,LocalPath,Description) " +
                                     "values(@Bucket,@HashValue,@UploadTime,@DownloadUrl,@LocalPath,@Description)";
                         MySqlCommand cmd = new MySqlCommand(sqlInsert, connection);
                         cmd.Parameters.AddWithValue("@Bucket", bucket);
@@ -218,6 +221,44 @@ namespace QiniuTool
                 this.pictureBox.Image = Image.FromFile(localPath);
                 this.textBoxUrl.Text = this.dataGridView.CurrentRow.Cells[4].Value.ToString();
             }
+        }
+
+        private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingWindow settingWindow = new SettingWindow();
+            settingWindow.Owner = this;
+            settingWindow.Show();
+        }
+
+        private void WatermarkToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WatermarkWindow watermarkWindow = new WatermarkWindow();
+            watermarkWindow.Owner = this;
+            watermarkWindow.addWaterMarkEvent += new WatermarkWindow.delgateWatermark(AddWatermark);
+            watermarkWindow.Show();
+        }
+        private void AddWatermark(string text, Font font, int PosX, int PosY, Color color)
+        {
+            using (Image img = this.pictureBox.Image)
+            {
+                    Graphics graph = Graphics.FromImage(img);
+                    Brush brush = new SolidBrush(color);
+                    graph.DrawString(text,font,brush,PosX,PosY);
+                    string tmpStr = this.fileToUpload.Split('.')[0];
+                    string fileEnding = this.fileToUpload.Split('.')[1];
+                    string fileName = tmpStr + "_withWatermark." + fileEnding;
+                    this.textBoxPath.Text = fileName;
+                    if (File.Exists(fileName))
+                    {
+                        File.Delete(fileName);
+                    }
+                    else
+                    {
+                        img.Save(fileName);
+                    }
+                    
+                    this.pictureBox.Image = Image.FromFile(fileName);         
+            }    
         }
     }
 }
