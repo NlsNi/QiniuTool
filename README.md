@@ -31,7 +31,8 @@ CREATE TABLE pictures (
 
 ```
 
-上传成功后后侧会更新数据库中的所有图片信息。
+上传成功后右侧会更新数据库中的所有图片信息。
+![运行截图](http://odh8qadsk.bkt.clouddn.com/20170601_160002.png)
 
 将数据库的连接字符串写入到app.config文件当中，利用Configurationmanager进行读取。
 
