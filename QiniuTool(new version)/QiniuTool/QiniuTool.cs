@@ -218,6 +218,7 @@ namespace QiniuTool
             string localPath = this.dataGridView.CurrentRow.Cells[5].Value.ToString();
             if (File.Exists(localPath))
             {
+                this.pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 this.pictureBox.Image = Image.FromFile(localPath);
                 this.textBoxUrl.Text = this.dataGridView.CurrentRow.Cells[4].Value.ToString();
             }
