@@ -113,7 +113,8 @@ namespace QiniuTool
                     }
                     else
                     {
-                        string ending = filepath.Split('.')[1];
+                        string[] splitedString = filepath.Split('.');
+                        string ending = splitedString[splitedString.Length - 1];
                         string filename = String.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now) + "." + ending;
                         this.Upload(filename, filepath);
                         this.ShowAllPictures();
